@@ -10,9 +10,4 @@ public class SoftPlus implements NNActivation {
     public double derivative(double x) {
         return 1.0 / (1 + Math.exp(x));
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random();
-    }
 }

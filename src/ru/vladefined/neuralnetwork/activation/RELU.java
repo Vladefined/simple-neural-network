@@ -10,9 +10,4 @@ public class RELU implements NNActivation {
     public double derivative(double x) {
         return x <= 0 ? 0 : 1;
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random();
-    }
 }

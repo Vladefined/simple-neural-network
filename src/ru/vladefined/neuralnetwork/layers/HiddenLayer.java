@@ -3,6 +3,7 @@ package ru.vladefined.neuralnetwork.layers;
 import ru.vladefined.neuralnetwork.activation.NNActivation;
 import ru.vladefined.neuralnetwork.modules.NNLayer;
 import ru.vladefined.neuralnetwork.modules.NNLayers;
+import ru.vladefined.neuralnetwork.weightinitialization.NNWeightInitialization;
 
 public class HiddenLayer extends NNLayer {
 
@@ -22,6 +23,12 @@ public class HiddenLayer extends NNLayer {
             return this;
         }
 
+        public HiddenLayer.Builder weightInit(NNWeightInitialization weightInitialization) {
+            super.weightInit(weightInitialization);
+
+            return this;
+        }
+
         public HiddenLayer.Builder dropout(double d) {
             super.dropout(d);
 
@@ -32,6 +39,7 @@ public class HiddenLayer extends NNLayer {
         protected HiddenLayer build(NNLayers layers, int prevLayerNeurons) {
             HiddenLayer layer = new HiddenLayer(layers, prevLayerNeurons, this.neurons);
             if (activation != null) layer.activation(activation);
+            if (weightInitialization != null) layer.weightInit(weightInitialization);
             if (d > 0.0 && d < 1.0) layer.dropout(d);
 
             return layer;

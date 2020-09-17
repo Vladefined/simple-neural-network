@@ -10,9 +10,4 @@ public class LeakyRELU implements NNActivation {
     public double derivative(double x) {
         return x <= 0 ? 0.01 : 1;
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random() * 2 - 1.0;
-    }
 }

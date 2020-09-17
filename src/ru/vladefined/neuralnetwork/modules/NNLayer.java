@@ -2,6 +2,7 @@ package ru.vladefined.neuralnetwork.modules;
 
 import ru.vladefined.neuralnetwork.activation.NNActivation;
 import ru.vladefined.neuralnetwork.activation.SoftMax;
+import ru.vladefined.neuralnetwork.weightinitialization.NNWeightInitialization;
 
 public class NNLayer {
     protected NNActivation activation;
@@ -24,12 +25,17 @@ public class NNLayer {
 
     protected NNLayer activation(NNActivation activation) {
         this.activation = activation;
+
+        return this;
+    }
+
+    protected NNLayer weightInit(NNWeightInitialization weightInitialization) {
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[i].length; j++) {
-                weights[i][j] = activation.weightInitialization();
+                weights[i][j] = weightInitialization.initWeight(layers.layers.get(layers.layers.size() - 1).neurons.length, neurons.length);
             }
         }
-        bias = activation.weightInitialization();
+        bias = weightInitialization.initWeight(layers.layers.get(layers.layers.size() - 1).neurons.length, neurons.length);
 
         return this;
     }
@@ -75,6 +81,7 @@ public class NNLayer {
     protected static class Builder {
         protected int neurons;
         protected NNActivation activation = null;
+        protected NNWeightInitialization weightInitialization = null;
         protected double d = 0.0;
 
         public Builder(int neurons) {
@@ -84,9 +91,16 @@ public class NNLayer {
         protected NNLayer build(NNLayers layers, int prevLayerNeurons) {
             NNLayer layer = new NNLayer(layers, prevLayerNeurons, neurons);
             if (activation != null) layer.activation(activation);
+            if (weightInitialization != null) layer.weightInit(weightInitialization);
             if (d > 0.0 && d < 1.0) layer.dropout(d);
 
             return layer;
+        }
+
+        protected Builder weightInit(NNWeightInitialization weightInitialization) {
+            this.weightInitialization = weightInitialization;
+
+            return this;
         }
 
         protected Builder activation(NNActivation activation) {

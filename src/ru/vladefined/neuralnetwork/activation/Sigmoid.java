@@ -10,9 +10,4 @@ public class Sigmoid implements NNActivation {
     public double derivative(double x) {
         return Math.cos(x);
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random() * 2 - 1.0;
-    }
 }

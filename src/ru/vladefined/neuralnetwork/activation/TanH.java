@@ -10,9 +10,4 @@ public class TanH implements NNActivation {
     public double derivative(double x) {
         return 1 - activate(x) * activate(x);
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random() * 2 - 1.0;
-    }
 }

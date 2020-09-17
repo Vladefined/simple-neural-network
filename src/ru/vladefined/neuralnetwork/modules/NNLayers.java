@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NNLayers {
     private NeuralNetwork.Builder builder;
-    private List<NNLayer> layers = new ArrayList<>();
+    protected List<NNLayer> layers = new ArrayList<>();
     private double learningRate;
     protected boolean useBIAS = false;
 

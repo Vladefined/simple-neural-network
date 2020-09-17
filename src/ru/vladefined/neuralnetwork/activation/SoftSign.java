@@ -10,9 +10,4 @@ public class SoftSign implements NNActivation {
     public double derivative(double x) {
         return x / ((1 * Math.abs(x)) * (1 * Math.abs(x)));
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random() * 2 - 1.0;
-    }
 }

@@ -21,9 +21,4 @@ public class SoftMax implements NNActivation {
     public double derivative(double x, double[] prevNeurons, double[] neurons) {
         return activate(1 - activate(x, neurons), prevNeurons);
     }
-
-    @Override
-    public double weightInitialization() {
-        return Math.random();
-    }
 }
