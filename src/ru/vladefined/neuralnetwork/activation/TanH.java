@@ -8,7 +8,7 @@ public class TanH implements NNActivation {
 
     @Override
     public double derivative(double x) {
-        return 1 - x * x;
+        return 1 - activate(x) * activate(x);
     }
 
     @Override
