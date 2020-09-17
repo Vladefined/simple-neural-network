@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class SoftMax implements NNActivation {
     @Override
     public double activate(double x) {
-        return activate(x, null);
+        return activate(x, new double[1]);
     }
 
     public double activate(double x, double[] neurons) {
