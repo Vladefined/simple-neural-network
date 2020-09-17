@@ -69,15 +69,6 @@ public class NNLayer {
         }
     }
 
-    public double cost(double[] expected) {
-        double result = 0;
-        for (int i = 0; i < neurons.length; i++) {
-            result += (expected[i] - neurons[i]) * (expected[i] - neurons[i]);
-        }
-
-        return 1.0 / 2 * result;
-    }
-
     protected static class Builder {
         protected int neurons;
         protected NNActivation activation = null;

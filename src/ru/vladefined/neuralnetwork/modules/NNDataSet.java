@@ -24,6 +24,14 @@ public class NNDataSet {
         outputs.add(output);
     }
 
+    public int getInputLength() {
+        return inputs.get(0).length;
+    }
+
+    public int getOutputLength() {
+        return outputs.get(0).length;
+    }
+
     public int size() {
         return inputs.size();
     }

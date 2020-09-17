@@ -39,9 +39,20 @@ public class NeuralNetwork {
             feedForward(inputs[i]);
             backPropagate(outputs[i]);
             cost += layers.cost(outputs[i]);
+            this.cost = cost / (i + 1);
             if (iterationListener != null) iterationListener.onIteration(i);
         }
         this.cost = cost / outputs.length;
+    }
+
+    public double test(NNDataSet dataSet) {
+        int right = 0;
+        for (int i = 0; i < dataSet.size(); i++) {
+            int result = NNUtils.vectorToNum(feedForward(dataSet.get(i)[0]));
+            if (result == NNUtils.vectorToNum(dataSet.get(i)[1])) right++;
+        }
+
+        return right / (double) dataSet.size();
     }
 
     public void fit(NNDataSet dataSet) {
@@ -51,6 +62,7 @@ public class NeuralNetwork {
             feedForward(io[0]);
             backPropagate(io[1]);
             cost += layers.cost(io[0]);
+            this.cost = cost / (i + 1);
             if (iterationListener != null) iterationListener.onIteration(i);
         }
         this.cost = cost / dataSet.size();

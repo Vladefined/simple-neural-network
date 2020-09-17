@@ -56,7 +56,7 @@ public class NNLayers {
     }
 
     public double cost(double[] expected) {
-        return layers.get(layers.size() - 1).cost(expected);
+        return ((OutputLayer) layers.get(layers.size() - 1)).cost(expected);
     }
 
     public void backPropagate(double[] excepted) {
@@ -68,8 +68,8 @@ public class NNLayers {
             double[][] localGradients = layer.localGradients;
             for (int j = 0; j < neurons.length; j++) {
                 if (!layer.dropped[j]) {
-                    double errorSignal = i == layers.size() - 1 ? excepted[j] - neurons[j] : 0;
                     double[] weight = weights[j];
+                    double errorSignal = i == layers.size() - 1 ? excepted[j] - neurons[j] : 0;
                     for (int k = 0; k < weight.length; k++) {
                         if (!prevLayer.dropped[k]) {
                             if (i == layers.size() - 1) { //BACK PROP FOR OUTPUT LAYER
