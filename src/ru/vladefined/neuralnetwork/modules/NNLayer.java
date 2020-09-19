@@ -1,7 +1,6 @@
 package ru.vladefined.neuralnetwork.modules;
 
-import ru.vladefined.neuralnetwork.activation.NNActivation;
-import ru.vladefined.neuralnetwork.activation.SoftMax;
+import ru.vladefined.neuralnetwork.activation.*;
 import ru.vladefined.neuralnetwork.weightinitialization.WeightInit;
 
 public class NNLayer {

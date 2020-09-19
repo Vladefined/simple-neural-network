@@ -3,8 +3,6 @@ package ru.vladefined.neuralnetwork.lossfunction;
 import ru.vladefined.neuralnetwork.activation.NNActivation;
 import ru.vladefined.neuralnetwork.activation.SoftMax;
 
-import java.util.Arrays;
-
 public class SoftmaxCrossEntropy implements LossFunction {
     @Override
     public double calculate(double[] output, double[] expected) {

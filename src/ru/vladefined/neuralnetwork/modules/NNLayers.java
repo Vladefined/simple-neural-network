@@ -1,9 +1,7 @@
 package ru.vladefined.neuralnetwork.modules;
 
 import ru.vladefined.neuralnetwork.NeuralNetwork;
-import ru.vladefined.neuralnetwork.layers.HiddenLayer;
-import ru.vladefined.neuralnetwork.layers.InputLayer;
-import ru.vladefined.neuralnetwork.layers.OutputLayer;
+import ru.vladefined.neuralnetwork.layers.*;
 
 import java.util.ArrayList;
 import java.util.List;

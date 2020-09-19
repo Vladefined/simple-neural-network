@@ -1,21 +1,16 @@
 package ru.vladefined.neuralnetwork;
 
-import ru.vladefined.neuralnetwork.modules.NNDataSet;
-import ru.vladefined.neuralnetwork.modules.NNIterationListener;
-import ru.vladefined.neuralnetwork.modules.NNLayers;
-import ru.vladefined.neuralnetwork.modules.NNUtils;
+import ru.vladefined.neuralnetwork.modules.*;
 import ru.vladefined.neuralnetwork.optimization.OptimizationAlgorithm;
 
 public class NeuralNetwork {
-    private double learningRate;
     private NNLayers layers;
 
     private OptimizationAlgorithm algorithm;
 
-    private NeuralNetwork(NNLayers layers, OptimizationAlgorithm algorithm, double learningRate) {
+    private NeuralNetwork(NNLayers layers, OptimizationAlgorithm algorithm) {
         this.layers = layers;
         this.algorithm = algorithm;
-        this.learningRate = learningRate;
     }
 
     public double[] feedForward(double[] inputs) {
@@ -72,7 +67,7 @@ public class NeuralNetwork {
         }
 
         public NeuralNetwork build() {
-            return new NeuralNetwork(layers, algorithm, learningRate);
+            return new NeuralNetwork(layers, algorithm);
         }
 
         public Builder useBIAS(boolean use) {
