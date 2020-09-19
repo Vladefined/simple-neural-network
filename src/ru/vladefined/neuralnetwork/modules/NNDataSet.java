@@ -24,11 +24,11 @@ public class NNDataSet {
         outputs.add(output);
     }
 
-    public int getInputLength() {
+    public int getInputShape() {
         return inputs.get(0).length;
     }
 
-    public int getOutputLength() {
+    public int getOutputShape() {
         return outputs.get(0).length;
     }
 

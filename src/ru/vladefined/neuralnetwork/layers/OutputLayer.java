@@ -1,16 +1,17 @@
 package ru.vladefined.neuralnetwork.layers;
 
 import ru.vladefined.neuralnetwork.activation.NNActivation;
-import ru.vladefined.neuralnetwork.lossfunction.NNLossFunction;
+import ru.vladefined.neuralnetwork.lossfunction.LossFunction;
 import ru.vladefined.neuralnetwork.modules.NNLayer;
 import ru.vladefined.neuralnetwork.modules.NNLayers;
-import ru.vladefined.neuralnetwork.weightinitialization.NNWeightInitialization;
+import ru.vladefined.neuralnetwork.weightinitialization.WeightInit;
 
 public class OutputLayer extends NNLayer {
-    public NNLossFunction lossFunction;
+    public LossFunction lossFunction;
 
     protected OutputLayer(NNLayers layers, int prevLayerNeurons, int neurons) {
         super(layers, prevLayerNeurons, neurons);
+        activation = NNActivation.SIGMOID;
     }
 
     public double cost(double[] expected) {
@@ -18,7 +19,7 @@ public class OutputLayer extends NNLayer {
     }
 
     public static class Builder extends NNLayer.Builder {
-        private NNLossFunction lossFunction = null;
+        private LossFunction lossFunction = LossFunction.SQUARED_LOSS;
 
         public Builder(int neurons) {
             super(neurons);
@@ -31,13 +32,13 @@ public class OutputLayer extends NNLayer {
             return this;
         }
 
-        public OutputLayer.Builder lossFunction(NNLossFunction lossFunction) {
+        public OutputLayer.Builder lossFunc(LossFunction lossFunction) {
             this.lossFunction = lossFunction;
 
             return this;
         }
 
-        public OutputLayer.Builder weightInit(NNWeightInitialization weightInitialization) {
+        public OutputLayer.Builder weightInit(WeightInit weightInitialization) {
             super.weightInit(weightInitialization);
 
             return this;
@@ -46,10 +47,10 @@ public class OutputLayer extends NNLayer {
         @Override
         protected OutputLayer build(NNLayers layers, int prevLayerNeurons) {
             OutputLayer layer = new OutputLayer(layers, prevLayerNeurons, this.neurons);
-            if (activation != null) layer.activation(activation);
-            if (weightInitialization != null) layer.weightInit(weightInitialization);
-            if (d > 0.0 && d < 1.0) layer.dropout(d);
-            if (lossFunction != null) layer.lossFunction = lossFunction;
+            layer.activation(activation);
+            layer.weightInit(weightInitialization);
+            layer.dropout(d);
+            layer.lossFunction = lossFunction;
 
             return layer;
         }

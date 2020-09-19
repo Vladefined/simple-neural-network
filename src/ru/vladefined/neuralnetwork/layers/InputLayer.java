@@ -33,8 +33,8 @@ public class InputLayer extends NNLayer {
         @Override
         protected InputLayer build(NNLayers layers, int prevLayerNeurons) {
             InputLayer layer = new InputLayer(layers, prevLayerNeurons, this.neurons);
-            if (activation != null) layer.activation(activation);
-            if (d > 0.0 && d < 1.0) layer.dropout(d);
+            layer.activation(activation);
+            layer.dropout(d);
 
             return layer;
         }

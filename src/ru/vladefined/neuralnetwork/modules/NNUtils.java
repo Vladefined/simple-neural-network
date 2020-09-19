@@ -1,4 +1,4 @@
-package ru.vladefined.neuralnetwork;
+package ru.vladefined.neuralnetwork.modules;
 
 import ru.vladefined.neuralnetwork.modules.NNDataSet;
 
@@ -35,7 +35,7 @@ public class NNUtils {
             inputs[i - 1] = new double[vals.length - 1];
             outputs[i - 1] = numToVector(Integer.parseInt(vals[0]), 10);
             for (int j = 1; j < vals.length; j++) {
-                inputs[i - 1][j - 1] = Integer.parseInt(vals[j]) / 255.0 * 2 - 1.0;
+                inputs[i - 1][j - 1] = Integer.parseInt(vals[j]) / 255.0;
             }
         }
 

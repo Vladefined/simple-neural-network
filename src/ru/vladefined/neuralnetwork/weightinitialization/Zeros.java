@@ -1,8 +1,8 @@
 package ru.vladefined.neuralnetwork.weightinitialization;
 
-public class RandomInitialization implements WeightInit {
+public class Zeros implements WeightInit {
     @Override
     public double initWeight(int in, int out) {
-        return Math.random() * 2 - 1.0;
+        return 0;
     }
 }

@@ -1,6 +1,6 @@
 package ru.vladefined.neuralnetwork.lossfunction;
 
-public class MeanSquaredError implements NNLossFunction {
+public class MeanSquaredError implements LossFunction {
     @Override
     public double calculate(double[] output, double[] expected) {
         double errorSum = 0;

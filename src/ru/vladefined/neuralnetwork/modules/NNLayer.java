@@ -2,16 +2,16 @@ package ru.vladefined.neuralnetwork.modules;
 
 import ru.vladefined.neuralnetwork.activation.NNActivation;
 import ru.vladefined.neuralnetwork.activation.SoftMax;
-import ru.vladefined.neuralnetwork.weightinitialization.NNWeightInitialization;
+import ru.vladefined.neuralnetwork.weightinitialization.WeightInit;
 
 public class NNLayer {
-    protected NNActivation activation;
+    public NNActivation activation;
 
-    protected double[] neurons;
-    protected boolean[] dropped;
-    protected double[][] weights, localGradients;
+    public double[] neurons;
+    public boolean[] dropped;
+    public double[][] weights;
 
-    protected double bias, biasGradient;
+    public double bias;
 
     private NNLayers layers;
 
@@ -19,7 +19,6 @@ public class NNLayer {
         this.neurons = new double[neurons];
         dropped = new boolean[neurons];
         weights = new double[neurons][prevLayerNeurons];
-        localGradients = new double[neurons][prevLayerNeurons];
         this.layers = layers;
     }
 
@@ -29,7 +28,7 @@ public class NNLayer {
         return this;
     }
 
-    protected NNLayer weightInit(NNWeightInitialization weightInitialization) {
+    protected NNLayer weightInit(WeightInit weightInitialization) {
         for (int i = 0; i < weights.length; i++) {
             for (int j = 0; j < weights[i].length; j++) {
                 weights[i][j] = weightInitialization.initWeight(layers.layers.get(layers.layers.size() - 1).neurons.length, neurons.length);
@@ -71,8 +70,8 @@ public class NNLayer {
 
     protected static class Builder {
         protected int neurons;
-        protected NNActivation activation = null;
-        protected NNWeightInitialization weightInitialization = null;
+        protected NNActivation activation = NNActivation.TANH;
+        protected WeightInit weightInitialization = WeightInit.ONES;
         protected double d = 0.0;
 
         public Builder(int neurons) {
@@ -81,14 +80,14 @@ public class NNLayer {
 
         protected NNLayer build(NNLayers layers, int prevLayerNeurons) {
             NNLayer layer = new NNLayer(layers, prevLayerNeurons, neurons);
-            if (activation != null) layer.activation(activation);
-            if (weightInitialization != null) layer.weightInit(weightInitialization);
-            if (d > 0.0 && d < 1.0) layer.dropout(d);
+            layer.activation(activation);
+            layer.weightInit(weightInitialization);
+            layer.dropout(d);
 
             return layer;
         }
 
-        protected Builder weightInit(NNWeightInitialization weightInitialization) {
+        protected Builder weightInit(WeightInit weightInitialization) {
             this.weightInitialization = weightInitialization;
 
             return this;

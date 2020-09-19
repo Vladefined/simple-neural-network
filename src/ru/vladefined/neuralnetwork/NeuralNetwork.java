@@ -1,20 +1,20 @@
 package ru.vladefined.neuralnetwork;
 
-import ru.vladefined.neuralnetwork.activation.*;
 import ru.vladefined.neuralnetwork.modules.NNDataSet;
 import ru.vladefined.neuralnetwork.modules.NNIterationListener;
 import ru.vladefined.neuralnetwork.modules.NNLayers;
+import ru.vladefined.neuralnetwork.modules.NNUtils;
+import ru.vladefined.neuralnetwork.optimization.OptimizationAlgorithm;
 
 public class NeuralNetwork {
     private double learningRate;
     private NNLayers layers;
 
-    private NNIterationListener iterationListener = null;
+    private OptimizationAlgorithm algorithm;
 
-    private double cost = 0;
-
-    private NeuralNetwork(NNLayers layers, double learningRate) {
+    private NeuralNetwork(NNLayers layers, OptimizationAlgorithm algorithm, double learningRate) {
         this.layers = layers;
+        this.algorithm = algorithm;
         this.learningRate = learningRate;
     }
 
@@ -23,26 +23,15 @@ public class NeuralNetwork {
     }
 
     public double cost() {
-        return cost;
+        return algorithm.cost();
     }
 
     public void fit(double[] input, double[] output) {
-        feedForward(input);
-        backPropagate(output);
-        this.cost = layers.cost(output);
+        algorithm.fit(layers, new NNDataSet(new double[][] {input}, new double[][] {output}));
     }
 
     public void fit(double[][] inputs, double[][] outputs) {
-        if (inputs.length != outputs.length) return;
-        double cost = 0;
-        for (int i = 0; i < inputs.length; i++) {
-            feedForward(inputs[i]);
-            backPropagate(outputs[i]);
-            cost += layers.cost(outputs[i]);
-            this.cost = cost / (i + 1);
-            if (iterationListener != null) iterationListener.onIteration(i);
-        }
-        this.cost = cost / outputs.length;
+        algorithm.fit(layers, new NNDataSet(inputs, outputs));
     }
 
     public double test(NNDataSet dataSet) {
@@ -56,35 +45,23 @@ public class NeuralNetwork {
     }
 
     public void fit(NNDataSet dataSet) {
-        double cost = 0;
-        for (int i = 0; i < dataSet.size(); i++) {
-            double[][] io = dataSet.get(i);
-            feedForward(io[0]);
-            backPropagate(io[1]);
-            cost += layers.cost(io[0]);
-            this.cost = cost / (i + 1);
-            if (iterationListener != null) iterationListener.onIteration(i);
-        }
-        this.cost = cost / dataSet.size();
-    }
-
-    public void backPropagate(double[] expected) {
-        layers.backPropagate(expected);
+        algorithm.fit(layers, dataSet);
     }
 
     public void setIterationListener(NNIterationListener iterationListener) {
-        this.iterationListener = iterationListener;
+        algorithm.setListener(iterationListener);
     }
 
     public static class Builder {
-        private double learningRate = 0.01;
+        private double learningRate = 0.01, momentum = 0.5;
         private NNLayers layers;
+        private OptimizationAlgorithm algorithm = OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT;
 
         public Builder() {
-            layers = new NNLayers(this, learningRate);
+            layers = new NNLayers(this, learningRate, momentum);
         }
 
-        public Builder setLearningRate(double rate) {
+        public Builder learningRate(double rate) {
             learningRate = rate;
 
             return this;
@@ -95,11 +72,23 @@ public class NeuralNetwork {
         }
 
         public NeuralNetwork build() {
-            return new NeuralNetwork(layers, learningRate);
+            return new NeuralNetwork(layers, algorithm, learningRate);
         }
 
         public Builder useBIAS(boolean use) {
             layers.setUseBIAS(use);
+
+            return this;
+        }
+
+        public Builder momentum(double momentum) {
+            this.momentum = momentum;
+
+            return this;
+        }
+
+        public Builder optimizationAlgorithm(OptimizationAlgorithm algorithm) {
+            this.algorithm = algorithm;
 
             return this;
         }
