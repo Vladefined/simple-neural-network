@@ -8,6 +8,9 @@ import ru.vladefined.neuralnetwork.modules.NNDataSet;
 import ru.vladefined.neuralnetwork.optimization.OptimizationAlgorithm;
 import ru.vladefined.neuralnetwork.weightinitialization.WeightInit;
 
+import java.io.File;
+import java.io.IOException;
+
 public class SimpleExample {
 
     public static void main(String[] args) {
@@ -42,6 +45,11 @@ public class SimpleExample {
             System.out.println();
             System.out.println("COST - " + network.cost());
             System.out.println("===================================");
+        }
+        try {
+            network.save(new File("C:/saved"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
