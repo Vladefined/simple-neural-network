@@ -32,16 +32,16 @@ public class SimpleExample {
                 {1.0},
                 {0.0}
         });
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 1000; i++) {
             network.fit(dataSet);
-            System.out.println("============ ITERATION " + i + " ============");
+            System.out.println("============ EPOCH " + i + " ============");
             System.out.println(network.feedForward(dataSet.get(0)[0])[0]);
             System.out.println(network.feedForward(dataSet.get(1)[0])[0]);
             System.out.println(network.feedForward(dataSet.get(2)[0])[0]);
             System.out.println(network.feedForward(dataSet.get(3)[0])[0]);
             System.out.println();
             System.out.println("COST - " + network.cost());
-            System.out.println("=========================================");
+            System.out.println("===================================");
         }
     }
 
