@@ -7,8 +7,8 @@ public class NNLayer {
     public NNActivation activation;
 
     public double[] neurons;
-    public boolean[] dropped;
     public double[][] weights;
+    public double dropout = 0;
 
     public double bias;
 
@@ -16,7 +16,6 @@ public class NNLayer {
 
     protected NNLayer(NNLayers layers, int prevLayerNeurons, int neurons) {
         this.neurons = new double[neurons];
-        dropped = new boolean[neurons];
         weights = new double[neurons][prevLayerNeurons];
         this.layers = layers;
     }
@@ -39,10 +38,7 @@ public class NNLayer {
     }
 
     protected NNLayer dropout(double d) {
-        if (d >= 1.0 || d <= 0.0) return this;
-        for (int i = 0; i < dropped.length; i++) {
-            if (Math.random() < d) dropped[i] = true;
-        }
+        dropout = d;
 
         return this;
     }
@@ -54,16 +50,14 @@ public class NNLayer {
     public void feed(NNLayer previous) {
         double[] previousNeurons = previous.neurons;
         for (int i = 0; i < neurons.length; i++) {
-            if (!dropped[i]) {
-                double sum = 0;
-                for (int j = 0; j < previousNeurons.length; j++) {
-                    if (!previous.dropped[j]) sum += weights[i][j] * previousNeurons[j];
-                }
-                neurons[i] = activation instanceof SoftMax ?
-                        ((SoftMax) activation).activate(sum + (layers.useBIAS ? previous.bias : 0), neurons)
-                        :
-                        activation.activate(sum + (layers.useBIAS ? previous.bias : 0));
+            double sum = 0;
+            for (int j = 0; j < previousNeurons.length; j++) {
+                sum += weights[i][j] * previousNeurons[j];
             }
+            neurons[i] = activation instanceof SoftMax ?
+                    ((SoftMax) activation).activate(sum + (layers.useBIAS ? previous.bias : 0), neurons)
+                    :
+                    activation.activate(sum + (layers.useBIAS ? previous.bias : 0));
         }
     }
 

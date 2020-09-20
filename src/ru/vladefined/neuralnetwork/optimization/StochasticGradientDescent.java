@@ -46,12 +46,12 @@ public class StochasticGradientDescent implements OptimizationAlgorithm {
             double[][] weights = layer.weights;
             double[][] localGradients = new double[weights.length][weights[0].length];
             for (int j = 0; j < neurons.length; j++) {
-                if (!layer.dropped[j]) {
+                if (layer.dropout == 0 || Math.random() >= layer.dropout) {
                     double[] weight = weights[j];
                     double errorSignal = i == layers.size() - 1 ? expected[j] - neurons[j] : 0;
                     double NWSum = neuronsWeightsSum(i, j);
                     for (int k = 0; k < weight.length; k++) {
-                        if (!prevLayer.dropped[k]) {
+                        if (prevLayer.dropout == 0 || Math.random() >= prevLayer.dropout) {
                             double localGrad;
                             if (i == layers.size() - 1) { //BACK PROP FOR OUTPUT LAYER
                                 localGrad = errorSignal * (layer.activation instanceof SoftMax ?
@@ -107,7 +107,7 @@ public class StochasticGradientDescent implements OptimizationAlgorithm {
         NNLayer prevLayer = layers.layers.get(layerNum - 1);
         double result = 0;
         for (int i = 0; i < prevLayer.neurons.length; i++) {
-            if (!prevLayer.dropped[i]) result += prevLayer.neurons[i] * layer.weights[neuronNum][i];
+            result += prevLayer.neurons[i] * layer.weights[neuronNum][i];
         }
         if (layers.useBIAS) result += prevLayer.bias;
 

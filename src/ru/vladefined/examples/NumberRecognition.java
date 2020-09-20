@@ -22,8 +22,8 @@ public class NumberRecognition {
                 .optimizationAlgorithm(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .layers()
                 .add(new InputLayer.Builder(trainDataSet.getInputShape()).activation(NNActivation.TANH))
-                .add(new HiddenLayer.Builder(32).weightInit(WeightInit.RANDOM).activation(NNActivation.TANH))
-                .add(new OutputLayer.Builder(trainDataSet.getOutputShape()).weightInit(WeightInit.RANDOM).lossFunc(LossFunction.SQUARED_LOSS).activation(NNActivation.SIGMOID))
+                .add(new HiddenLayer.Builder(32).weightInit(WeightInit.XAVIER).activation(NNActivation.TANH))
+                .add(new OutputLayer.Builder(trainDataSet.getOutputShape()).weightInit(WeightInit.XAVIER).lossFunc(LossFunction.SOFTMAX_CROSS_ENTROPY).activation(NNActivation.SOFTMAX))
                 .compile()
                 .build();
         network.setIterationListener(iteration -> {
