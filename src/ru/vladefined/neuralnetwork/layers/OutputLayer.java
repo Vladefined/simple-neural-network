@@ -1,6 +1,7 @@
 package ru.vladefined.neuralnetwork.layers;
 
 import ru.vladefined.neuralnetwork.activation.NNActivation;
+import ru.vladefined.neuralnetwork.activation.SoftMax;
 import ru.vladefined.neuralnetwork.lossfunction.LossFunction;
 import ru.vladefined.neuralnetwork.modules.NNLayer;
 import ru.vladefined.neuralnetwork.modules.NNLayers;
@@ -14,12 +15,19 @@ public class OutputLayer extends NNLayer {
         activation = NNActivation.SIGMOID;
     }
 
+    public double calculateGradient(double errorSignal, double neuron, NNLayer prevLayer) {
+        return errorSignal * (activation instanceof SoftMax ?
+                ((SoftMax) activation).derivative(neuron, prevLayer.neurons)
+                :
+                activation.derivative(neuron));
+    }
+
     public double cost(double[] expected) {
         return lossFunction.calculate(neurons, expected);
     }
 
     public static class Builder extends NNLayer.Builder {
-        private LossFunction lossFunction = LossFunction.SQUARED_LOSS;
+        protected LossFunction lossFunction = LossFunction.L2;
 
         public Builder(int neurons) {
             super(neurons);
@@ -42,6 +50,11 @@ public class OutputLayer extends NNLayer {
             super.weightInit(weightInitialization);
 
             return this;
+        }
+
+        @Override
+        public NNLayer.Builder dropout(double d) {
+            return super.dropout(d);
         }
 
         @Override

@@ -15,10 +15,10 @@ public class SoftMax implements NNActivation {
 
     @Override
     public double derivative(double x) {
-        return derivative(x, null, null);
+        return derivative(x, null);
     }
 
-    public double derivative(double x, double[] prevNeurons, double[] neurons) {
-        return activate(1 - activate(x, neurons), prevNeurons);
+    public double derivative(double x, double[] prevNeurons) {
+        return activate(1 - x, prevNeurons);
     }
 }

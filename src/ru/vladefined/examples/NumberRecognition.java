@@ -21,9 +21,9 @@ public class NumberRecognition {
                 .momentum(0.5)
                 .optimizationAlgorithm(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .layers()
-                .add(new InputLayer.Builder(trainDataSet.getInputShape()).activation(NNActivation.TANH))
-                .add(new HiddenLayer.Builder(32).weightInit(WeightInit.XAVIER).activation(NNActivation.TANH))
-                .add(new OutputLayer.Builder(trainDataSet.getOutputShape()).weightInit(WeightInit.XAVIER).lossFunc(LossFunction.SOFTMAX_CROSS_ENTROPY).activation(NNActivation.SOFTMAX))
+                .add(new InputLayer.Builder(trainDataSet.getInputShape()))
+                .add(new HiddenLayer.Builder(32).weightInit(WeightInit.RANDOM).activation(NNActivation.SIGMOID))
+                .add(new OutputLayer.Builder(trainDataSet.getOutputShape()).weightInit(WeightInit.RANDOM).lossFunc(LossFunction.L2).activation(NNActivation.SOFTMAX))
                 .compile()
                 .build();
         network.setIterationListener(iteration -> {

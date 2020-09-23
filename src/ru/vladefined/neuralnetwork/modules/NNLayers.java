@@ -2,6 +2,7 @@ package ru.vladefined.neuralnetwork.modules;
 
 import ru.vladefined.neuralnetwork.NeuralNetwork;
 import ru.vladefined.neuralnetwork.layers.*;
+import ru.vladefined.neuralnetwork.modules.lstm.LSTMLayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +40,12 @@ public class NNLayers {
         return this;
     }
 
-    public double[] feedForward(double[] input) {
+    public double[] feedForward(double[] input, boolean isLearning) {
         NNLayer inputs = layers.get(0);
         if (inputs.neurons.length == input.length) {
             inputs.setNeurons(input);
             for (int i = 1; i < layers.size(); i++) {
-                layers.get(i).feed(layers.get(i - 1));
+                layers.get(i).feed(layers.get(i - 1), isLearning);
             }
 
             return layers.get(layers.size() - 1).neurons.clone();

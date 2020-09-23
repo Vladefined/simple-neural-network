@@ -15,13 +15,13 @@ public class SimpleExample {
 
     public static void main(String[] args) {
         NeuralNetwork network = new NeuralNetwork.Builder()
-                .learningRate(0.0001)
+                .learningRate(0.01)
                 .momentum(0.5)
                 .optimizationAlgorithm(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .layers()
-                .add(new InputLayer.Builder(3).activation(NNActivation.LEAKY_RELU))
-                .add(new HiddenLayer.Builder(6).weightInit(WeightInit.RANDOM).activation(NNActivation.LEAKY_RELU))
-                .add(new OutputLayer.Builder(1).weightInit(WeightInit.RANDOM).lossFunc(LossFunction.SQUARED_LOSS).activation(NNActivation.SIGMOID))
+                .add(new InputLayer.Builder(3))
+                .add(new HiddenLayer.Builder(6).weightInit(WeightInit.RANDOM).activation(NNActivation.TANH))
+                .add(new OutputLayer.Builder(1).weightInit(WeightInit.RANDOM).lossFunc(LossFunction.BINARY_CROSS_ENTROPY).activation(NNActivation.SINUSOID))
                 .compile()
                 .build();
         NNDataSet dataSet = new NNDataSet(new double[][] {

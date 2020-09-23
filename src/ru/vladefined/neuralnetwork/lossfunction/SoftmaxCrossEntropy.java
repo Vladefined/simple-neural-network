@@ -9,9 +9,23 @@ public class SoftmaxCrossEntropy implements LossFunction {
         double errorSum = 0;
         for (int i = 0; i < output.length; i++) {
             for (double o : output) {
-                errorSum += expected[i] * Math.log(((SoftMax) NNActivation.SOFTMAX).activate(o, output));
+                errorSum += single(output, o, expected[i]);
             }
         }
-        return -errorSum;
+        return errorSum;
+    }
+
+    public double single(double[] outputs, double output, double expected) {
+        return -expected * Math.log(((SoftMax) NNActivation.SOFTMAX).activate(output, outputs));
+    }
+
+    @Override
+    public double single(double output, double expected) {
+        return single(null, 0, 0);
+    }
+
+    @Override
+    public double derivative(double output, double expected) {
+        return output - expected;
     }
 }

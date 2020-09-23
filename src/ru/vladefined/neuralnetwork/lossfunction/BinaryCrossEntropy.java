@@ -3,10 +3,20 @@ package ru.vladefined.neuralnetwork.lossfunction;
 public class BinaryCrossEntropy implements LossFunction {
     @Override
     public double calculate(double[] output, double[] expected) {
-        double errorSum = 0;
+        double sum = 0;
         for (int i = 0; i < output.length; i++) {
-            errorSum += expected[i] * Math.log(output[i]) + (1 - expected[i]) * Math.log(1 - output[i]);
+            sum += single(output[i], expected[i]);
         }
-        return -errorSum;
+        return -sum;
+    }
+
+    @Override
+    public double single(double output, double expected) {
+        return expected * Math.log(output) + (1 - expected) * Math.log(1 - output);
+    }
+
+    @Override
+    public double derivative(double output, double expected) {
+        return expected - output;
     }
 }

@@ -1,13 +1,10 @@
 package ru.vladefined.neuralnetwork.modules;
 
-import ru.vladefined.neuralnetwork.modules.NNDataSet;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 public class NNUtils {
 
@@ -35,7 +32,7 @@ public class NNUtils {
             inputs[i - 1] = new double[vals.length - 1];
             outputs[i - 1] = numToVector(Integer.parseInt(vals[0]), 10);
             for (int j = 1; j < vals.length; j++) {
-                inputs[i - 1][j - 1] = Integer.parseInt(vals[j]) / 255.0;
+                inputs[i - 1][j - 1] = Integer.parseInt(vals[j]) / 255.0 - 0.5;
             }
         }
 

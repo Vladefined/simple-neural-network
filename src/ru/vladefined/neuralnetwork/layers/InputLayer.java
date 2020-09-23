@@ -17,20 +17,6 @@ public class InputLayer extends NNLayer {
         }
 
         @Override
-        public InputLayer.Builder activation(NNActivation activation) {
-            super.activation(activation);
-
-            return this;
-        }
-
-        @Override
-        public InputLayer.Builder dropout(double d) {
-            super.dropout(d);
-
-            return this;
-        }
-
-        @Override
         protected InputLayer build(NNLayers layers, int prevLayerNeurons) {
             InputLayer layer = new InputLayer(layers, prevLayerNeurons, this.neurons);
             layer.activation(activation);

@@ -20,7 +20,11 @@ public class NeuralNetwork {
     }
 
     public double[] feedForward(double[] inputs) {
-        return layers.feedForward(inputs);
+        return feedForward(inputs, false);
+    }
+
+    public double[] feedForward(double[] inputs, boolean isLearning) {
+        return layers.feedForward(inputs, isLearning);
     }
 
     public double cost() {
@@ -38,7 +42,7 @@ public class NeuralNetwork {
     public double test(NNDataSet dataSet) {
         int right = 0;
         for (int i = 0; i < dataSet.size(); i++) {
-            int result = NNUtils.vectorToNum(feedForward(dataSet.get(i)[0]));
+            int result = NNUtils.vectorToNum(feedForward(dataSet.get(i)[0], false));
             if (result == NNUtils.vectorToNum(dataSet.get(i)[1])) right++;
         }
 

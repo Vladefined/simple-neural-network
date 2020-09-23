@@ -7,16 +7,17 @@ public class NNLayer {
     public NNActivation activation;
 
     public double[] neurons;
-    public double[][] weights;
+    public double[][] weights, lastDeltaWeight;
     public double dropout = 0;
 
-    public double bias;
+    public double bias, lastDeltaBias;
 
     private NNLayers layers;
 
     protected NNLayer(NNLayers layers, int prevLayerNeurons, int neurons) {
         this.neurons = new double[neurons];
         weights = new double[neurons][prevLayerNeurons];
+        lastDeltaWeight = new double[neurons][prevLayerNeurons];
         this.layers = layers;
     }
 
@@ -47,7 +48,22 @@ public class NNLayer {
         this.neurons = neurons.clone();
     }
 
-    public void feed(NNLayer previous) {
+    public double calculateGradient(double neuron, double WGSum) {
+        return activation.derivative(neuron) * WGSum;
+    }
+
+    public double weightsGradientsSum(double[][] localGradients, double biasGradient) {
+        double nextLocalGradW = 0;
+        for (int l = 0; l < weights.length; l++) {
+            for (int m = 0; m < weights[l].length; m++) {
+                nextLocalGradW += weights[l][m] * localGradients[l][m];
+            }
+        }
+        if (layers.useBIAS) nextLocalGradW += bias * biasGradient;
+        return nextLocalGradW;
+    }
+
+    public void feed(NNLayer previous, boolean isLearning) {
         double[] previousNeurons = previous.neurons;
         for (int i = 0; i < neurons.length; i++) {
             double sum = 0;
